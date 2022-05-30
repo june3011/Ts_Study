@@ -14,4 +14,16 @@
 // 덕분에 사용할 API를 알게 되서 자동완성 기능을 제공해줄 수 있따
 // ex) document.~~  localstorage.getItem
 
-import { init } from "./myPackage.js";
+import { init, exit } from "myPackage";
+
+// init({
+//   url: "true",
+// });
+
+// exit(1);
+
+// localStorage.clear();
+
+init({ url: "hello" });
+
+exit(36);
