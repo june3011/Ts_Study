@@ -11,6 +11,9 @@ export function init(config) {
   return true;
 }
 
+// JSDOC
+// allowJS: true를 써서 js와 ts를 함께 쓸 수 있도록 함
+
 /**
  * Exits the program
  * @param {number} code

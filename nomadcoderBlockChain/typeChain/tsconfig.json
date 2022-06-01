@@ -4,8 +4,11 @@
     "outDir": "build",
     "esModuleInterop": true,
     "target": "ES6",
-    "lib": ["ES6", "DOM"],
+    // "lib": ["ES6", "DOM"],
+    "lib": ["ES6"],
     "strict": true,
-    "allowJs": true
+    // "allowJs": true,
+    "esModuleInterop": true,
+    "module": "CommonJS"
   }
 }
