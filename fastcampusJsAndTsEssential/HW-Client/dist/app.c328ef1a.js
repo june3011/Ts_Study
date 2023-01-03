@@ -123,8 +123,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
 // console.log(rootDiv);
 
+var container = document.getElementById("root");
 var ajax = new XMLHttpRequest();
+var content = document.createElement("div");
 var NEWS_URL = "https://api.hnpwa.com/v0/news/1.json";
+var CONTENT_URL = "https://api.hnpwa.com/v0/item/@id.json";
 ajax.open("get", NEWS_URL, false);
 ajax.send();
 
@@ -136,12 +139,34 @@ var newPeed = JSON.parse(ajax.response);
 //
 
 var ul = document.createElement("ul");
+window.addEventListener("hashchange", function () {
+  //   console.log("해시가 변경됨");
+
+  var id = location.hash.substring(1);
+  //   console.log(id);  // #이 제거된 id값만 출력
+
+  ajax.open("GET", CONTENT_URL.replace("@id", id), false);
+  ajax.send();
+  var newsContent = JSON.parse(ajax.response);
+  var title = this.document.createElement("h1");
+  title.innerHTML = newsContent.title;
+  content.appendChild(title);
+  console.log(newsContent);
+});
 for (var i = 0; i < newPeed.length; i++) {
   var li = document.createElement("li");
-  li.innerHTML = newPeed[i].title;
+  var a = document.createElement("a");
+  a.href = "#".concat(newPeed[i].id);
+  //   a.href = `#`;  // 바뀌어도 그대로 #이기 때문에 이벤트 발생할 때 찍히는 콘솔로그는 한 번만 찍힘.
+  a.innerHTML = "".concat(newPeed[i].title, " {").concat(newPeed[i].comments_count, "}");
+
+  //   a.addEventListener("click", function() {})
+
+  li.appendChild(a);
   ul.appendChild(li);
 }
-document.getElementById("root").appendChild(ul);
+container.appendChild(ul);
+container.appendChild(content);
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
