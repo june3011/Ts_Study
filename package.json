@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@types/node": "^17.0.36",
+    "parcel": "^2.8.2",
     "ts-node": "^10.8.0"
   },
   "dependencies": {
