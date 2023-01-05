@@ -128,12 +128,19 @@ var ajax = new XMLHttpRequest();
 var content = document.createElement("div");
 var NEWS_URL = "https://api.hnpwa.com/v0/news/1.json";
 var CONTENT_URL = "https://api.hnpwa.com/v0/item/@id.json";
-ajax.open("get", NEWS_URL, false);
-ajax.send();
+function getData(url) {
+  ajax.open("GET", url, false);
+  ajax.send();
+  return JSON.parse(ajax.response);
+}
+
+// ajax.open("GET", NEWS_URL, false);
+// ajax.send();
 
 // console.log(ajax.response);
 
-var newPeed = JSON.parse(ajax.response);
+// const newPeed = JSON.parse(ajax.response);
+var newPeed = getData(NEWS_URL);
 
 // console.log(newPeed);    // network 탭에 있는 preview에 있는 객체형식으로 출력됨. 상대적으로 보기 편해짐.
 //
@@ -145,25 +152,32 @@ window.addEventListener("hashchange", function () {
   var id = location.hash.substring(1);
   //   console.log(id);  // #이 제거된 id값만 출력
 
-  ajax.open("GET", CONTENT_URL.replace("@id", id), false);
-  ajax.send();
-  var newsContent = JSON.parse(ajax.response);
+  //   ajax.open("GET", CONTENT_URL.replace("@id", id), false);
+  //   ajax.send();
+
+  //   const newsContent = JSON.parse(ajax.response);
+  var newsContent = getData(CONTENT_URL);
   var title = this.document.createElement("h1");
   title.innerHTML = newsContent.title;
   content.appendChild(title);
   console.log(newsContent);
 });
 for (var i = 0; i < newPeed.length; i++) {
+  var div = document.createElement("div");
   var li = document.createElement("li");
   var a = document.createElement("a");
-  a.href = "#".concat(newPeed[i].id);
+  div.innerHTML = "\n  <li>\n    <a href=\"#".concat(newPeed[i].id, "\">\n    ").concat(newPeed[i].title, " {").concat(newPeed[i].comments_count, "}\n    </a>\n  </li>\n  ");
+
+  //   a.href = `#${newPeed[i].id}`;
   //   a.href = `#`;  // 바뀌어도 그대로 #이기 때문에 이벤트 발생할 때 찍히는 콘솔로그는 한 번만 찍힘.
-  a.innerHTML = "".concat(newPeed[i].title, " {").concat(newPeed[i].comments_count, "}");
+  //   a.innerHTML = `${newPeed[i].title} {${newPeed[i].comments_count}}`;
 
   //   a.addEventListener("click", function() {})
 
-  li.appendChild(a);
-  ul.appendChild(li);
+  //   li.appendChild(a);
+  //   ul.appendChild(li);
+  // ul.appendChild(div.children[0])
+  ul.appendChild(div.firstElementChild);
 }
 container.appendChild(ul);
 container.appendChild(content);
