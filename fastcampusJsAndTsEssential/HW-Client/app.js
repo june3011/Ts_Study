@@ -39,27 +39,47 @@ window.addEventListener("hashchange", function () {
   //   ajax.send();
 
   //   const newsContent = JSON.parse(ajax.response);
-  const newsContent = getData(CONTENT_URL);
+  const newsContent = getData(CONTENT_URL.replace("@id", id));
 
   const title = this.document.createElement("h1");
-  title.innerHTML = newsContent.title;
 
-  content.appendChild(title);
-  console.log(newsContent);
+  container.innerHTML = `
+    <h1>${newsContent.title}</h1>
+    <div>
+        <a href="#">목록으로</a>
+    </div>
+  `;
+
+  //   title.innerHTML = newsContent.title;
+
+  //   content.appendChild(title);
+  //   console.log(newsContent);
 });
 
-for (let i = 0; i < newPeed.length; i++) {
-  const div = document.createElement("div");
-  const li = document.createElement("li");
-  const a = document.createElement("a");
+const newsList = [];
 
-  div.innerHTML = `
+newsList.push(`<ul>`);
+
+for (let i = 0; i < newPeed.length; i++) {
+  //   const div = document.createElement("div");
+  //   const li = document.createElement("li");
+  //   const a = document.createElement("a");
+
+  //   div.innerHTML = `
+  //   <li>
+  //     <a href="#${newPeed[i].id}">
+  //     ${newPeed[i].title} {${newPeed[i].comments_count}}
+  //     </a>
+  //   </li>
+  //   `;
+
+  newsList.push(`
   <li>
     <a href="#${newPeed[i].id}">
     ${newPeed[i].title} {${newPeed[i].comments_count}}
     </a>
   </li>
-  `;
+  `);
 
   //   a.href = `#${newPeed[i].id}`;
   //   a.href = `#`;  // 바뀌어도 그대로 #이기 때문에 이벤트 발생할 때 찍히는 콘솔로그는 한 번만 찍힘.
@@ -70,8 +90,12 @@ for (let i = 0; i < newPeed.length; i++) {
   //   li.appendChild(a);
   //   ul.appendChild(li);
   // ul.appendChild(div.children[0])
-  ul.appendChild(div.firstElementChild);
+  //   ul.appendChild(div.firstElementChild);
 }
 
-container.appendChild(ul);
-container.appendChild(content);
+newsList.push(`</ul>`);
+
+// container.appendChild(ul);
+// container.appendChild(content);
+
+container.innerHTML = newsList.join(``);

@@ -156,17 +156,32 @@ window.addEventListener("hashchange", function () {
   //   ajax.send();
 
   //   const newsContent = JSON.parse(ajax.response);
-  var newsContent = getData(CONTENT_URL);
+  var newsContent = getData(CONTENT_URL.replace("@id", id));
   var title = this.document.createElement("h1");
-  title.innerHTML = newsContent.title;
-  content.appendChild(title);
-  console.log(newsContent);
+  container.innerHTML = "\n    <h1>".concat(newsContent.title, "</h1>\n    <div>\n        <a href=\"#\">\uBAA9\uB85D\uC73C\uB85C</a>\n    </div>\n  ");
+
+  //   title.innerHTML = newsContent.title;
+
+  //   content.appendChild(title);
+  //   console.log(newsContent);
 });
+
+var newsList = [];
+newsList.push("<ul>");
 for (var i = 0; i < newPeed.length; i++) {
-  var div = document.createElement("div");
-  var li = document.createElement("li");
-  var a = document.createElement("a");
-  div.innerHTML = "\n  <li>\n    <a href=\"#".concat(newPeed[i].id, "\">\n    ").concat(newPeed[i].title, " {").concat(newPeed[i].comments_count, "}\n    </a>\n  </li>\n  ");
+  //   const div = document.createElement("div");
+  //   const li = document.createElement("li");
+  //   const a = document.createElement("a");
+
+  //   div.innerHTML = `
+  //   <li>
+  //     <a href="#${newPeed[i].id}">
+  //     ${newPeed[i].title} {${newPeed[i].comments_count}}
+  //     </a>
+  //   </li>
+  //   `;
+
+  newsList.push("\n  <li>\n    <a href=\"#".concat(newPeed[i].id, "\">\n    ").concat(newPeed[i].title, " {").concat(newPeed[i].comments_count, "}\n    </a>\n  </li>\n  "));
 
   //   a.href = `#${newPeed[i].id}`;
   //   a.href = `#`;  // 바뀌어도 그대로 #이기 때문에 이벤트 발생할 때 찍히는 콘솔로그는 한 번만 찍힘.
@@ -177,10 +192,15 @@ for (var i = 0; i < newPeed.length; i++) {
   //   li.appendChild(a);
   //   ul.appendChild(li);
   // ul.appendChild(div.children[0])
-  ul.appendChild(div.firstElementChild);
+  //   ul.appendChild(div.firstElementChild);
 }
-container.appendChild(ul);
-container.appendChild(content);
+
+newsList.push("</ul>");
+
+// container.appendChild(ul);
+// container.appendChild(content);
+
+container.innerHTML = newsList.join("");
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
