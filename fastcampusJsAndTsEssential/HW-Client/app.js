@@ -1,8 +1,3 @@
-// const rootDiv = document.getElementById("root");
-// rootDiv.innerHTML = "<ul><li>하나</li><li>셋</li></ul>";
-
-// console.log(rootDiv);
-
 const container = document.getElementById("root");
 const ajax = new XMLHttpRequest();
 const content = document.createElement("div");
@@ -16,86 +11,50 @@ function getData(url) {
   return JSON.parse(ajax.response);
 }
 
-// ajax.open("GET", NEWS_URL, false);
-// ajax.send();
+function newsFeed() {
+  const newPeed = getData(NEWS_URL);
+  const newsList = [];
 
-// console.log(ajax.response);
+  newsList.push(`<ul>`);
 
-// const newPeed = JSON.parse(ajax.response);
-const newPeed = getData(NEWS_URL);
+  for (let i = 0; i < newPeed.length; i++) {
+    newsList.push(`
+      <li>
+        <a href="#${newPeed[i].id}">
+        ${newPeed[i].title} {${newPeed[i].comments_count}}
+        </a>
+      </li>
+      `);
+  }
 
-// console.log(newPeed);    // network 탭에 있는 preview에 있는 객체형식으로 출력됨. 상대적으로 보기 편해짐.
-//
+  newsList.push(`</ul>`);
 
-const ul = document.createElement("ul");
-
-window.addEventListener("hashchange", function () {
-  //   console.log("해시가 변경됨");
-
-  const id = location.hash.substring(1);
-  //   console.log(id);  // #이 제거된 id값만 출력
-
-  //   ajax.open("GET", CONTENT_URL.replace("@id", id), false);
-  //   ajax.send();
-
-  //   const newsContent = JSON.parse(ajax.response);
-  const newsContent = getData(CONTENT_URL.replace("@id", id));
-
-  const title = this.document.createElement("h1");
-
-  container.innerHTML = `
-    <h1>${newsContent.title}</h1>
-    <div>
-        <a href="#">목록으로</a>
-    </div>
-  `;
-
-  //   title.innerHTML = newsContent.title;
-
-  //   content.appendChild(title);
-  //   console.log(newsContent);
-});
-
-const newsList = [];
-
-newsList.push(`<ul>`);
-
-for (let i = 0; i < newPeed.length; i++) {
-  //   const div = document.createElement("div");
-  //   const li = document.createElement("li");
-  //   const a = document.createElement("a");
-
-  //   div.innerHTML = `
-  //   <li>
-  //     <a href="#${newPeed[i].id}">
-  //     ${newPeed[i].title} {${newPeed[i].comments_count}}
-  //     </a>
-  //   </li>
-  //   `;
-
-  newsList.push(`
-  <li>
-    <a href="#${newPeed[i].id}">
-    ${newPeed[i].title} {${newPeed[i].comments_count}}
-    </a>
-  </li>
-  `);
-
-  //   a.href = `#${newPeed[i].id}`;
-  //   a.href = `#`;  // 바뀌어도 그대로 #이기 때문에 이벤트 발생할 때 찍히는 콘솔로그는 한 번만 찍힘.
-  //   a.innerHTML = `${newPeed[i].title} {${newPeed[i].comments_count}}`;
-
-  //   a.addEventListener("click", function() {})
-
-  //   li.appendChild(a);
-  //   ul.appendChild(li);
-  // ul.appendChild(div.children[0])
-  //   ul.appendChild(div.firstElementChild);
+  container.innerHTML = newsList.join(``);
 }
 
-newsList.push(`</ul>`);
+function newsDetail() {
+  const id = location.hash.substring(1);
 
-// container.appendChild(ul);
-// container.appendChild(content);
+  const newsContent = getData(CONTENT_URL.replace("@id", id));
 
-container.innerHTML = newsList.join(``);
+  container.innerHTML = `
+      <h1>${newsContent.title}</h1>
+      <div>
+          <a href="#">목록으로</a>
+      </div>
+    `;
+}
+
+function router() {
+  const routePath = location.hash;
+
+  if (routePath === "") {
+    newsFeed();
+  } else {
+    newsDetail();
+  }
+}
+
+window.addEventListener("hashchange", router);
+
+router();
