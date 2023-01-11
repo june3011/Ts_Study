@@ -134,13 +134,14 @@ function getData(url) {
 function newsFeed() {
   var newPeed = getData(NEWS_URL);
   var newsList = [];
-  newsList.push("<ul>");
+  var template = "\n    <div>\n        <h1>Hacker News</h1>\n        <ul>\n            {{__news_feed__}}\n        </ul>\n        <div>\n            <a href=\"#/page/{{__prev_page__}}\">\uC774\uC804 \uD398\uC774\uC9C0</a>\n            <a href=\"#/page/{{__next_page__}}\">\uB2E4\uC74C \uD398\uC774\uC9C0</a>\n        </div>\n    </div>\n  ";
   for (var i = (store.currentPage - 1) * 10; i < store.currentPage * 10; i++) {
     newsList.push("\n      <li>\n        <a href=\"#/show/".concat(newPeed[i].id, "\">\n        ").concat(newPeed[i].title, " {").concat(newPeed[i].comments_count, "}\n        </a>\n      </li>\n      "));
   }
-  newsList.push("</ul>");
-  newsList.push("\n    <div>\n        <a href=\"#/page/".concat(store.currentPage > 1 ? store.currentPage - 1 : 1, "\">\uC774\uC804 \uD398\uC774\uC9C0</a>\n        <a href=\"#/page/").concat(newPeed.length / 10 > store.currentPage ? store.currentPage + 1 : store.currentPage, "\">\uB2E4\uC74C \uD398\uC774\uC9C0</a>\n    </div>\n  "));
-  container.innerHTML = newsList.join("");
+  template = template.replace("{{__news_feed__}}", newsList.join(""));
+  template = template.replace("{{__prev_page__}}", store.currentPage > 1 ? store.currentPage - 1 : 1);
+  template = template.replace("{{__next_page__}}", newPeed.length / 10 > store.currentPage ? store.currentPage + 1 : store.currentPage);
+  container.innerHTML = template;
 }
 function newsDetail() {
   var id = location.hash.substring(7);
