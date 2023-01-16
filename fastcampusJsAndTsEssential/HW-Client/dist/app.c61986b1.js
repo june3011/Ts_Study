@@ -118,6 +118,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"app.ts":[function(require,module,exports) {
+"use strict";
+
 var container = document.getElementById("root");
 var ajax = new XMLHttpRequest();
 var content = document.createElement("div");
